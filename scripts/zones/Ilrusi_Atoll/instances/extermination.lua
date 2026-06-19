@@ -5,10 +5,26 @@ local ID = zones[xi.zone.ILRUSI_ATOLL]
 -----------------------------------
 local instanceObject = {}
 
+instanceObject.registryRequirements = function(player)
+    return player:hasKeyItem(xi.ki.ILRUSI_ASSAULT_ORDERS) and
+        player:getCurrentAssault() == xi.assault.mission.EXTERMINATION and
+        player:getCharVar('assaultEntered') == 0 and
+        player:hasKeyItem(xi.ki.ASSAULT_ARMBAND) and
+        player:getMainLvl() > 50
+end
+
+instanceObject.entryRequirements = function(player)
+    return player:hasKeyItem(xi.ki.ILRUSI_ASSAULT_ORDERS) and
+        player:getCurrentAssault() == xi.assault.mission.EXTERMINATION and
+        player:getCharVar('assaultEntered') == 0 and
+        player:getMainLvl() > 50
+end
+
 instanceObject.afterInstanceRegister = function(player)
     local instance = player:getInstance()
 
-    player:messageSpecial(ID.text.ASSAULT_43_START, 43)
+    player:setCharVar('assaultEntered', 43)
+    player:messageSpecial(ID.text.ASSAULT_START_OFFSET + 43, 43)
     player:messageSpecial(ID.text.TIME_TO_COMPLETE, instance:getTimeLimit())
 end
 

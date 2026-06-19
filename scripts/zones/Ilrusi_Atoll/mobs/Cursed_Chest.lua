@@ -2,8 +2,54 @@
 -- Area: Ilrusi Atoll
 --  Mob: Cursed Chest
 -----------------------------------
+local ID = zones[xi.zone.ILRUSI_ATOLL]
+-----------------------------------
 ---@type TMobEntity
 local entity = {}
+
+entity.onTrigger = function(player, mob)
+    player:messageSpecial(ID.text.CHEST)
+
+    local mobID    = mob:getID()
+    local instance = mob:getInstance()
+    if not instance then
+        return
+    end
+
+    local figureheadChest = instance:getProgress()
+
+    if mobID == figureheadChest then
+        player:messageSpecial(ID.text.GOLDEN)
+        instance:complete()
+        for _, v in pairs(ID.mob[2]) do
+            DespawnMob(v, instance)
+        end
+    else
+        mob:updateClaim(player)
+    end
+end
+
+entity.onMobEngage = function(mob, target)
+    local instance = mob:getInstance()
+    if not instance then
+        return
+    end
+
+    local figureheadChest = instance:getProgress()
+
+    if mob:getID() == figureheadChest then
+        -- safety: golden chest should be handled in onTrigger, not here
+        target:messageSpecial(ID.text.GOLDEN)
+        instance:complete()
+        mob:setStatus(xi.status.INVISIBLE)
+        mob:setHP(0)
+        for _, v in pairs(ID.mob[2]) do
+            DespawnMob(v, instance)
+        end
+    else
+        mob:setAnimationSub(1)
+    end
+end
 
 local function CheckForDrawnIn(centerX, centerY, centerZ, playerX, playerY, playerZ, rayon, maxRayon)
     local difX = playerX-centerX

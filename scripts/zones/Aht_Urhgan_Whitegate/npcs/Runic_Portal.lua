@@ -9,6 +9,14 @@ local ID = zones[xi.zone.AHT_URHGAN_WHITEGATE]
 local entity = {}
 
 entity.onTrigger = function(player, npc)
+    printf('[Runic Portal:onTrigger] player=%s currentAssault=%d hasOrders=%s hasPermit=%s imperialStanding=%d runicPortals=%d',
+        player:getName(),
+        player:getCurrentAssault(),
+        tostring(xi.assault.hasOrders(player)),
+        tostring(player:hasKeyItem(xi.ki.RUNIC_PORTAL_USE_PERMIT)),
+        player:getCurrency('imperial_standing'),
+        player:getTeleport(xi.teleport.type.RUNIC_PORTAL))
+
     local runicPortals  = player:getTeleport(xi.teleport.type.RUNIC_PORTAL)
     local assaultOrders =
     {
@@ -24,11 +32,19 @@ entity.onTrigger = function(player, npc)
         for k, v in pairs(assaultOrders) do
             if player:hasKeyItem(v.KI) then
                 local validTeleport = bit.band(runicPortals, v.tele)
+                printf('[Runic Portal:onTrigger] matchedAssault=%d event=%d tele=%d valid=%d runicPortals=%d validTeleport=%d',
+                    k,
+                    v.event,
+                    v.tele,
+                    v.valid,
+                    runicPortals,
+                    validTeleport)
                 player:messageSpecial(ID.text.CONFIRMING, v.KI)
 
                 if validTeleport == v.valid then
                     player:startEvent(v.event)
                 else
+                    printf('[Runic Portal:onTrigger] deniedAssault=%d expectedBit=%d actual=%d', k, v.valid, validTeleport)
                     player:messageSpecial(ID.text.RUNIC_DENIED_ASSAULT_OFFSET + k)
                 end
 
@@ -52,6 +68,23 @@ entity.onTrigger = function(player, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
+    local confirmOption = bit.band(option, 0xFFFF)
+    local packedOption = bit.rshift(option, 16)
+    local eventOption = packedOption > 0 and packedOption or confirmOption
+
+    printf('[Runic Portal:onEventFinish] player=%s csid=%d option=%d confirm=%d packed=%d event=%d currentAssault=%d hasOrders=%s hasPermit=%s imperialStanding=%d runicPortals=%d',
+        player:getName(),
+        csid,
+        option,
+        confirmOption,
+        packedOption,
+        eventOption,
+        player:getCurrentAssault(),
+        tostring(xi.assault.hasOrders(player)),
+        tostring(player:hasKeyItem(xi.ki.RUNIC_PORTAL_USE_PERMIT)),
+        player:getCurrency('imperial_standing'),
+        player:getTeleport(xi.teleport.type.RUNIC_PORTAL))
+
     local portalPick =
     {
         [1]    = xi.teleport.id.AZOUPH_SP,
@@ -91,13 +124,13 @@ entity.onEventFinish = function(player, csid, option, npc)
         [6] = 0x40, -- Nyzul
     }
 
-    if csid == 101 and option > 100 and option < 1007 then
+    if csid == 101 and eventOption > 100 and eventOption < 1007 and confirmOption == 1 then
         -- Map option back to portal index for bitmask check
         local portalIndex
-        if option >= 101 and option <= 106 then
-            portalIndex = option - 100
-        elseif option >= 1001 and option <= 1006 then
-            portalIndex = option - 1000
+        if eventOption >= 101 and eventOption <= 106 then
+            portalIndex = eventOption - 100
+        elseif eventOption >= 1001 and eventOption <= 1006 then
+            portalIndex = eventOption - 1000
         end
 
         if
@@ -107,32 +140,32 @@ entity.onEventFinish = function(player, csid, option, npc)
             return
         end
 
-        if option >= 101 and option <= 106 then
+        if eventOption >= 101 and eventOption <= 106 then
             if not player:hasKeyItem(xi.ki.RUNIC_PORTAL_USE_PERMIT) then
                 return
             end
 
             player:delKeyItem(xi.ki.RUNIC_PORTAL_USE_PERMIT)
-            xi.teleport.to(player, portalPick[option])
-        elseif option >= 1001 and option <= 1006 then
+            xi.teleport.to(player, portalPick[eventOption])
+        elseif eventOption >= 1001 and eventOption <= 1006 then
             if player:getCurrency('imperial_standing') >= 200 then
                 player:delCurrency('imperial_standing', 200)
-                xi.teleport.to(player, portalPick[option])
+                xi.teleport.to(player, portalPick[eventOption])
             else
                 player:messageSpecial(ID.text.SUFFICIENT_IMPERIAL_STANDING)
             end
         end
-    elseif csid == 101 and option >= 1 and option <= 6 then
+    elseif csid == 101 and eventOption >= 1 and eventOption <= 6 and confirmOption == 1 then
         if not player:hasKeyItem(xi.ki.CAPTAIN_WILDCAT_BADGE) then
             return
         end
 
-        if bit.band(runicPortals, portalBits[option]) == 0 then
+        if bit.band(runicPortals, portalBits[eventOption]) == 0 then
             return
         end
 
-        xi.teleport.to(player, portalPick[option])
-    elseif csid >= 120 and csid <= 125 and option == 1 then
+        xi.teleport.to(player, portalPick[eventOption])
+    elseif csid >= 120 and csid <= 125 and confirmOption == 1 then
         xi.teleport.to(player, portalPick[csid])
     end
 end

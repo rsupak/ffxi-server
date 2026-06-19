@@ -269,6 +269,7 @@ public:
     uint8 getFreeSlotsCount(const sol::object& locID);         // Gets value of free slots in Entity inventory
     void  confirmTrade() const;                                // Complete trade with an npc, only removing confirmed items
     void  tradeComplete() const;                               // Complete trade with an npc
+    void  tradeWorn() const;                                   // Clear trade container but don't remove items (for worn items)
     auto  getTrade() -> CTradeContainer*;
 
     // Equipping

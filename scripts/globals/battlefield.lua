@@ -319,6 +319,7 @@ xi.battlefield.id =
     WHEN_ANGELS_FALL                           = 1024, -- Converted
     DAWN                                       = 1056, -- Converted
     APOCALYPSE_NIGH                            = 1057, -- Converted
+    THE_WYRM_GOD                               = 1058, -- Converted
     CALL_TO_ARMS                               = 1088,
     COMPLIMENTS_TO_THE_CHEF                    = 1089,
     PUPPETMASTER_BLUES                         = 1090,
@@ -553,7 +554,16 @@ function Battlefield:register()
     xi.battlefield.contents[self.battlefieldId] = self
 
     if utils.hasKey(self.zoneId, xi.battlefield.contentsByZone) then
-        table.insert(xi.battlefield.contentsByZone[self.zoneId], self)
+        local zoneContents = xi.battlefield.contentsByZone[self.zoneId]
+
+        -- Replace stale copies of this battlefield on script reload so menu slots do not duplicate.
+        for i = #zoneContents, 1, -1 do
+            if zoneContents[i].battlefieldId == self.battlefieldId then
+                table.remove(zoneContents, i)
+            end
+        end
+
+        table.insert(zoneContents, self)
     else
         xi.battlefield.contentsByZone[self.zoneId] = { self }
     end
@@ -873,6 +883,11 @@ function Battlefield:onEntryEventUpdate(player, csid, option, npc)
         then
             if not self.requiredItems.keep then
                 player:tradeComplete()
+            end
+        else
+            -- For worn items, unreserve them but keep them in inventory
+            if #self.tradeItems > 0 then
+                player:tradeWorn()
             end
         end
 

@@ -16,8 +16,7 @@ quest.sections =
     {
         check = function(player, status, vars)
             return status == xi.questStatus.QUEST_ACCEPTED and
-                VanadielHour() >= 18 and
-                VanadielHour() < 5
+                (VanadielHour() >= 18 or VanadielHour() < 5)
         end,
 
         [xi.zone.LA_THEINE_PLATEAU] =

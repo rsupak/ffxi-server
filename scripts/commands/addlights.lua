@@ -2,7 +2,7 @@
 -- func: addlights <light type> <amount> <target player>
 -- desc: Adds the amount of specified light to the player
 -----------------------------------
--- lights: 1: pearl, 2: azure, 3: ruby, 4: amber, 5: gold, 6: silver, 7: ebon
+-- engine order: 1: pearl, 2: golden, 3: silvery, 4: ebon, 5: azure, 6: ruby, 7: amber
 -----------------------------------
 ---@type TCommand
 local commandObj = {}
@@ -15,13 +15,15 @@ commandObj.cmdprops =
 
 local lightType =
 {
-    pearl  = 1,
-    gold   = 2,
-    silver = 3,
-    ebon   = 4,
-    azure  = 5,
-    ruby   = 6,
-    amber  = 7,
+    pearl   = xi.abyssea.lightType.PEARL,
+    gold    = xi.abyssea.lightType.GOLDEN,
+    golden  = xi.abyssea.lightType.GOLDEN,
+    silver  = xi.abyssea.lightType.SILVERY,
+    silvery = xi.abyssea.lightType.SILVERY,
+    ebon    = xi.abyssea.lightType.EBON,
+    azure   = xi.abyssea.lightType.AZURE,
+    ruby    = xi.abyssea.lightType.RUBY,
+    amber   = xi.abyssea.lightType.AMBER,
 }
 
 local function error(player, msg)
@@ -62,8 +64,10 @@ commandObj.onTrigger = function(player, light, amount, target)
     end
 
     xi.abyssea.addPlayerLights(targ, setLight, amount)
-    local newAmount = targ:getCharVar(light..'Light')
-    player:printToPlayer(string.format('%s was given %i %s light, for a total of %i.', targ:getName(), amount, light, newAmount))
+
+    local lightValues = xi.abyssea.getLightsTable(targ)
+    local newAmount = lightValues[setLight] or 0
+    player:printToPlayer(string.format('%s was given %i %s light, for a total of %i.', targ:getName(), amount, selectedLight, newAmount))
 end
 
 return commandObj

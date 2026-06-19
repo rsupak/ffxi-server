@@ -6,10 +6,26 @@ local ID = zones[xi.zone.ILRUSI_ATOLL]
 -----------------------------------
 local instanceObject = {}
 
+instanceObject.registryRequirements = function(player)
+    return player:hasKeyItem(xi.ki.ILRUSI_ASSAULT_ORDERS) and
+        player:getCurrentAssault() == xi.assault.mission.GOLDEN_SALVAGE and
+        player:getCharVar('assaultEntered') == 0 and
+        player:hasKeyItem(xi.ki.ASSAULT_ARMBAND) and
+        player:getMainLvl() > 50
+end
+
+instanceObject.entryRequirements = function(player)
+    return player:hasKeyItem(xi.ki.ILRUSI_ASSAULT_ORDERS) and
+        player:getCurrentAssault() == xi.assault.mission.GOLDEN_SALVAGE and
+        player:getCharVar('assaultEntered') == 0 and
+        player:getMainLvl() > 50
+end
+
 instanceObject.afterInstanceRegister = function(player)
     local instance = player:getInstance()
 
-    player:messageSpecial(ID.text.ASSAULT_41_START, 41)
+    player:setCharVar('assaultEntered', 41)
+    player:messageSpecial(ID.text.ASSAULT_START_OFFSET + 41, 41)
     player:messageSpecial(ID.text.TIME_TO_COMPLETE, instance:getTimeLimit())
 end
 
@@ -20,11 +36,21 @@ instanceObject.onInstanceCreated = function(instance)
         SpawnMob(v, instance)
     end
 
-    GetNPCByID(ID.npc.RUNE_OF_RELEASE, instance):setPos(420, -15, 72, 148)
-    GetNPCByID(ID.npc.ANCIENT_LOCKBOX, instance):setPos(415, -15, 75, 148)
-    GetNPCByID(ID.npc._1jp, instance):setAnimation(8)
-    GetNPCByID(ID.npc._jja, instance):setAnimation(8)
-    GetNPCByID(ID.npc._jjb, instance):setAnimation(8)
+    for i, v in pairs(ID.mob[2]) do
+        SpawnMob(v, instance)
+    end
+
+    local runeOfRelease = GetNPCByID(ID.npc.RUNE_OF_RELEASE, instance)
+    local ancientLockbox = GetNPCByID(ID.npc.ANCIENT_LOCKBOX, instance)
+    local npc1jp = GetNPCByID(ID.npc._1jp, instance)
+    local npcJja = GetNPCByID(ID.npc._jja, instance)
+    local npcJjb = GetNPCByID(ID.npc._jjb, instance)
+
+    if runeOfRelease then runeOfRelease:setPos(420, -15, 72, 148) end
+    if ancientLockbox then ancientLockbox:setPos(415, -15, 75, 148) end
+    if npc1jp then npc1jp:setAnimation(8) end
+    if npcJja then npcJja:setAnimation(8) end
+    if npcJjb then npcJjb:setAnimation(8) end
 
     instance:setProgress(instance:getProgress() + (figureheadChest))
 end

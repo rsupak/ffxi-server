@@ -29,6 +29,7 @@
 #include <fmt/ranges.h>
 #include <format>
 #include <set>
+#include <string_view>
 
 enum LSTYPE : std::uint8_t;
 enum class KeyItem : uint16_t;
@@ -42,9 +43,9 @@ public:
     {
     }
 
-    auto addError(std::string error) -> PacketValidationResult&
+    auto addError(std::string_view error) -> PacketValidationResult&
     {
-        errors_.push_back(std::move(error));
+        errors_.emplace_back(error);
         valid_ = false;
 
         return *this;
@@ -75,7 +76,7 @@ public:
 
     // Left value must equal right value
     template <typename T1, typename T2>
-    auto mustEqual(T1 left, T2 right, const std::string& errMsg) -> PacketValidator&
+    auto mustEqual(T1 left, T2 right, std::string_view errMsg) -> PacketValidator&
     {
         if (!result_.valid())
         {
@@ -92,7 +93,7 @@ public:
 
     // Left value must not equal right value
     template <typename T1, typename T2>
-    auto mustNotEqual(T1 left, T2 right, const std::string& errMsg) -> PacketValidator&
+    auto mustNotEqual(T1 left, T2 right, std::string_view errMsg) -> PacketValidator&
     {
         if (!result_.valid())
         {

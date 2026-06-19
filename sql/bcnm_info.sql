@@ -246,6 +246,7 @@ INSERT INTO `bcnm_records` VALUES (993,32,'warriors_path','nobody',0,1800);
 INSERT INTO `bcnm_records` VALUES (1024,35,'when_angels_fall','nobody',0,1800);
 INSERT INTO `bcnm_records` VALUES (1056,36,'dawn','nobody',0,1800);
 INSERT INTO `bcnm_records` VALUES (1057,36,'apocalypse_nigh','nobody',0,1800);
+INSERT INTO `bcnm_records` VALUES (1058,255,'the_wyrm_god','nobody',0,1800);
 INSERT INTO `bcnm_records` VALUES (1088,57,'call_to_arms','nobody',0,1800);
 INSERT INTO `bcnm_records` VALUES (1089,57,'compliments_to_the_chef','nobody',0,1800);
 INSERT INTO `bcnm_records` VALUES (1090,57,'puppetmaster_blues','nobody',0,1800);

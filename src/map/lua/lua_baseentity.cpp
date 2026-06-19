@@ -5031,6 +5031,39 @@ void CLuaBaseEntity::tradeComplete() const
     PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
 }
 
+/************************************************************************
+ *  Function: tradeWorn()
+ *  Purpose : Unreserves trade items without removing them (for worn items)
+ *  Example : player:tradeWorn()
+ *  Notes   : Used when items are marked as "worn" instead of consumed
+ ************************************************************************/
+
+void CLuaBaseEntity::tradeWorn() const
+{
+    if (m_PBaseEntity->objtype != TYPE_PC)
+    {
+        ShowWarning("Invalid entity type calling function (%s).", m_PBaseEntity->getName());
+        return;
+    }
+
+    auto* PChar = static_cast<CCharEntity*>(m_PBaseEntity);
+
+    for (uint8 slotID = 0; slotID < TRADE_CONTAINER_SIZE; ++slotID)
+    {
+        if (PChar->TradeContainer->getInvSlotID(slotID) != 0xFF)
+        {
+            CItem* PItem = PChar->TradeContainer->getItem(slotID);
+            if (PItem)
+            {
+                // Just unreserve the item, don't delete it
+                PItem->setReserve(0);
+            }
+        }
+    }
+    PChar->TradeContainer->Clean();
+    PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+}
+
 auto CLuaBaseEntity::getTrade() -> CTradeContainer*
 {
     if (m_PBaseEntity->objtype != TYPE_PC)
@@ -19777,6 +19810,7 @@ void CLuaBaseEntity::Register()
     SOL_REGISTER("getFreeSlotsCount", CLuaBaseEntity::getFreeSlotsCount);
     SOL_REGISTER("confirmTrade", CLuaBaseEntity::confirmTrade);
     SOL_REGISTER("tradeComplete", CLuaBaseEntity::tradeComplete);
+    SOL_REGISTER("tradeWorn", CLuaBaseEntity::tradeWorn);
     SOL_REGISTER("getTrade", CLuaBaseEntity::getTrade);
 
     // Equipping

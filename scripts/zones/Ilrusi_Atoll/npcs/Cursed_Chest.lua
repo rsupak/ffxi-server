@@ -2,6 +2,11 @@
 -- Area: Ilrusi Atoll
 --  NPC: Cursed Chest
 -----------------------------------
+-- Interaction is handled by mobs/Cursed_Chest.lua onTrigger.
+-- The mob entity (same targid, TYPE_MOB < TYPE_NPC in GetEntity lookup) is
+-- returned first by CZoneEntities::GetEntity, so this onTrigger is unreachable
+-- as long as the mob is spawned. Kept as a fallback.
+-----------------------------------
 local ID = zones[xi.zone.ILRUSI_ATOLL]
 -----------------------------------
 ---@type TNpcEntity
@@ -21,11 +26,14 @@ entity.onTrigger = function(player, npc)
     if npcID == figureheadChest then
         player:messageSpecial(ID.text.GOLDEN)
         instance:complete()
-        for i, v in pairs(ID.mob[2]) do
+        for _, v in pairs(ID.mob[2]) do
             DespawnMob(v, instance)
         end
     else
-        SpawnMob(npcID, instance):updateClaim(player)
+        local mob = SpawnMob(npcID, instance)
+        if mob then
+            mob:updateClaim(player)
+        end
     end
 end
 

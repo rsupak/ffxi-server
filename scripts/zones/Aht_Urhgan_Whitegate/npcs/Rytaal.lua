@@ -95,11 +95,12 @@ entity.onTrigger = function(player, npc)
 end
 
 entity.onEventFinish = function(player, csid, option, npc)
+    local eventOption = bit.band(option, 0xFFFF)
     local tagStock = player:getCurrency('id_tags')
 
     if
         csid == 268 and
-        option == 1 and
+        eventOption == 1 and
         not player:hasKeyItem(xi.ki.IMPERIAL_ARMY_ID_TAG) and
         tagStock > 0
     then
@@ -123,7 +124,7 @@ entity.onEventFinish = function(player, csid, option, npc)
         player:setCurrency('id_tags', tagStock - 1)
     elseif
         csid == 268 and
-        option == 2 and
+        eventOption == 2 and
         xi.assault.hasOrders(player) and
         not player:hasKeyItem(xi.ki.IMPERIAL_ARMY_ID_TAG)
     then

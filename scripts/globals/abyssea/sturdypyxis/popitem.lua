@@ -34,6 +34,9 @@ local function GetChestItemTable(npc)
 end
 
 local function GetRandItem(zoneId)
+    if not popitemDrops[zoneId] or #popitemDrops[zoneId] == 0 then
+        return nil
+    end
     local rand = math.random(1, #popitemDrops[zoneId])
     return popitemDrops[zoneId][rand]
 end
@@ -85,7 +88,9 @@ xi.pyxis.popitem.setPopItems = function(npc)
 
     for i = 1, itemcount do
         local item = GetRandItem(npc:getZoneID())
-        npc:setLocalVar('POPITEM' .. i, item)
+        if item then
+            npc:setLocalVar('POPITEM' .. i, item)
+        end
     end
 end
 

@@ -53,9 +53,9 @@ xi.instance.lookup =
 {
     [xi.zone.ILRUSI_ATOLL] =
     {
-        -- Assault: Golden Salvage
+        { 5500, { 108, 41, -4, 0, 60, 0, 1 }, { 108, 4 }, { 108, 0 } }, -- Assault: Golden Salvage
         -- Assault: Lamia No.13
-        -- Assault: Extermination
+        { 5502, { 108, 43, -4, 0, 70, 0, 1 }, { 108, 4 }, { 108, 0 } }, -- Assault: Extermination
         -- Assault: Demolition Duty
         -- Assault: Searat Salvation
         -- Assault: Apkallu Seizure

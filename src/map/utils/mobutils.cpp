@@ -2039,7 +2039,7 @@ void WeaknessTrigger(CBaseEntity* PTarget, WeaknessType level)
                    .results = {
                     {
                            .animation = animationID,
-                           .param     = 2582,
+                           .param     = 0,
                     },
                 },
             },
