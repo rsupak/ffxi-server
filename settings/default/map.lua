@@ -40,8 +40,8 @@ xi.settings.map =
     ENABLE_ITEM_RECYCLE_BIN = true,
 
     -- Self-unstuck feature (sends player to homepoint via Help Desk command)
-    SELF_UNSTUCK_ENABLED  = false,
-    SELF_UNSTUCK_COOLDOWN = 86400, -- Cooldown in seconds (default: 24 hours)
+    SELF_UNSTUCK_ENABLED  = true,
+    SELF_UNSTUCK_COOLDOWN = 120, -- Cooldown in seconds (default: 24 hours)
 
     -- AH fee structure, defaults are retail.
     AH_BASE_FEE_SINGLE = 1,
@@ -62,7 +62,7 @@ xi.settings.map =
     ENMITY_CAP = 30000,
 
     -- Misc EXP related settings
-    EXP_RATE                = 1.0,
+    EXP_RATE                = 10.0,
     EXP_LOSS_RATE           = 1.0,
     EXP_PARTY_GAP_PENALTIES = true,
 
@@ -72,7 +72,7 @@ xi.settings.map =
     EXP_PARTY_GAP_NO_EXP = 0,
 
     -- Capacity Point Settings
-    CAPACITY_RATE = 1.0,
+    CAPACITY_RATE = 10.0,
 
     -- Determines Vana'diel time epoch (886/1/1 Firesday)
     -- current timestamp - vanadiel_time_epoch = vana'diel time
@@ -115,13 +115,13 @@ xi.settings.map =
     ALL_JOBS_WIDESCAN = true,
 
     -- Base player movement speed
-    BASE_SPEED = 50,
+    BASE_SPEED = 100,
 
     -- Player movement speed limit
-    SPEED_LIMIT = 80,
+    SPEED_LIMIT = 200,
 
     -- Mount speed, expressed as player speed. Can surpass speed limit.
-    MOUNT_SPEED = 80,
+    MOUNT_SPEED = 200,
 
     -- Player animation speed divisor
     -- Raising this increases the players movement animation speed
@@ -132,8 +132,8 @@ xi.settings.map =
     MOB_RUN_SPEED_MULTIPLIER = 2.5,
 
     -- Allows you to manipulate the constant multiplier in the skill-up rate formulas, having a potent effect on skill-up rates.
-    SKILLUP_CHANCE_MULTIPLIER = 1.0,
-    CRAFT_CHANCE_MULTIPLIER   = 1.0,
+    SKILLUP_CHANCE_MULTIPLIER = 10.0,
+    CRAFT_CHANCE_MULTIPLIER   = 10.0,
 
     -- Multiplier for skillup amounts. Using anything above 1 will break the 0.5 cap, the cap will become 0.9 (For maximum, set to 5)
     SKILLUP_AMOUNT_MULTIPLIER = 1,
@@ -155,7 +155,7 @@ xi.settings.map =
     CRAFT_SPECIALIZATION_POINTS = 400,
 
     -- Multiplier applied to high quality chance
-    CRAFT_HQ_CHANCE_MULTIPLIER = 1.0,
+    CRAFT_HQ_CHANCE_MULTIPLIER = 10.0,
 
     -- Enable/disable all fishing, including quests. ENABLE AT YOUR OWN RISK.
     FISHING_ENABLE = false,
