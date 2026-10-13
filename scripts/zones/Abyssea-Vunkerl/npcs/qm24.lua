@@ -4,15 +4,13 @@
 -- Spawns Karkadann
 -- !pos -157 -31 88 217
 -----------------------------------
+local ID = zones[xi.zone.ABYSSEA_VUNKERL]
+-----------------------------------
 ---@type TNpcEntity
 local entity = {}
 
-entity.onTrade = function(player, npc, trade)
-    -- xi.abyssea.qmOnTrade(player, npc, trade)
-end
-
 entity.onTrigger = function(player, npc)
-    -- xi.abyssea.qmOnTrigger(player, npc)
+    xi.abyssea.qmOnTrigger(player, npc, ID.mob.KARKADANN_3, { xi.ki.WARPED_SMILODON_CHOKER, xi.ki.MALODOROUS_MARID_FUR })
 end
 
 entity.onEventUpdate = function(player, csid, option, npc)

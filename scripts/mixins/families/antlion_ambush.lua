@@ -22,7 +22,8 @@ g_mixins.families.antlion_ambush = function(antlion)
 
     antlion:addListener('ENGAGE', 'ANTLION_AMBUSH_ENGAGE', function(mob, target)
         -- mob:setStatus(xi.status.UPDATE)
-        mob:useMobAbility(xi.mobSkill.PIT_AMBUSH_1)
+        -- Ignore the skill distance check, otherwise a target beyond 11 yalms leaves the mob hidden and untargetable
+        mob:useMobAbility(xi.mobSkill.PIT_AMBUSH_1, target, nil, true)
     end)
 
     antlion:addListener('WEAPONSKILL_STATE_EXIT', 'ANTLION_AMBUSH_FINISH', function(mob, skillId, wasExecuted)

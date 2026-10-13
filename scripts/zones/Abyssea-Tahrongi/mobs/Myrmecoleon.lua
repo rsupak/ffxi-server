@@ -25,10 +25,14 @@ entity.onMobRoam = function(mob)
         mob:checkDistance(lachrymater) <= revealDistance
     then
         mob:setLocalVar('[Ambush]Triggered', 1)
-        mob:useMobAbility(xi.mobSkill.PIT_AMBUSH_1)
+        -- Pit Ambush needs an enemy target and the mob has none while roaming, so only use it when engaged.
+        local target = mob:getTarget()
+        if target then
+            mob:useMobAbility(xi.mobSkill.PIT_AMBUSH_1, target, nil, true)
+        end
 
-        -- Fallback in case the ambush weaponskill is interrupted.
-        mob:timer(3000, function(mobArg)
+        -- Fallback in case the ambush weaponskill is interrupted or has no target.
+        mob:timer(target and 3000 or 0, function(mobArg)
             if mobArg and mobArg:getLocalVar('[Ambush]Done') == 0 then
                 mobArg:hideName(false)
                 mobArg:setUntargetable(false)

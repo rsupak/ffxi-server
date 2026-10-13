@@ -417,7 +417,7 @@ local function GetGoldChestInfos(player, lightValues)
         if playerAmberLight >= amberTier.min and playerAmberLight <= amberTier.max then
             if math.random(1, 100) < 5 then
                 chestTier = math.max(tier, math.random(tier, 5))
-                maxUnlockNumber = dataAmberTiers[tier + 1].maxUnlockNumber
+                maxUnlockNumber = dataAmberTiers[math.min(tier + 1, 5)].maxUnlockNumber
             else
                 chestTier = tier
                 maxUnlockNumber = amberTier.maxUnlockNumber
@@ -509,7 +509,7 @@ local function SetPyxisData(npc, mob, player)
         end,
     }
 
-    if npc ~= nil or npc:getStatus() == xi.status.DISAPPEAR then
+    if npc ~= nil and npc:getStatus() == xi.status.DISAPPEAR then
         npc:resetLocalVars()
         --------------------------------------
         -- Change flags

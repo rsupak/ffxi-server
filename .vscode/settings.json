@@ -483,4 +483,42 @@
         "__tuple": "cpp",
         "climits": "cpp"
     },
+    "terminal.integrated.profiles.linux": {
+        "Connect Server": {
+            "path": "/bin/bash",
+            "args": [
+                "-c",
+                "docker attach ffxi-server-connect-1"
+            ]
+        },
+        "World Server": {
+            "path": "/bin/bash",
+            "args": [
+                "-c",
+                "docker attach ffxi-server-world-1"
+            ]
+        },
+        "Map Server": {
+            "path": "/bin/bash",
+            "args": [
+                "-c",
+                "docker attach ffxi-server-map-1"
+            ]
+        },
+        "Search Server": {
+            "path": "/bin/bash",
+            "args": [
+                "-c",
+                "docker attach ffxi-server-search-1"
+            ]
+        },
+        "MariaDB": {
+            "path": "/bin/bash",
+            "args": [
+                "-c",
+                "docker exec -it ffxi-server-database-1 mariadb -u xiadmin -p xidb"
+            ]
+        },
+
+    }
 }

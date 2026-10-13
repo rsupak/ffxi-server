@@ -38,6 +38,7 @@ zones[xi.zone.NEWTON_MOVALPOLOS] =
         DOOR_OFFSET          = GetFirstID('_0c0'),
         FURNACE_HATCH_OFFSET = GetFirstID('Furnace_Hatch'),
         TREASURE_COFFER      = GetFirstID('Treasure_Coffer'),
+        MOBLIN_SHOWMAN       = GetFirstID('Moblin_Showman'),
         MINING               = GetTableOfIDs('Mining_Point'),
     },
 }

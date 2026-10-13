@@ -19,7 +19,8 @@ g_mixins.families.antlion_ambush_no_rehide = function(antlion)
     antlion:addListener('ENGAGE', 'ANTLION_AMBUSH_ENGAGE', function(mob, target)
         if mob:getLocalVar('[Ambush]Done') == 0 then
             -- mob:setStatus(xi.status.UPDATE)
-            mob:useMobAbility(xi.mobSkill.PIT_AMBUSH_1)
+            -- Ignore the skill distance check, otherwise a target beyond 11 yalms leaves the mob hidden and untargetable
+            mob:useMobAbility(xi.mobSkill.PIT_AMBUSH_1, target, nil, true)
         end
     end)
 

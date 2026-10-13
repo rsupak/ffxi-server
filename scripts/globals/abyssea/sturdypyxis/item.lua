@@ -284,7 +284,12 @@ local function GetChestItemTable(npc)
 end
 
 local function GetRandItem(zoneId, tier)
-    local drops = { unpack(commonDrops), unpack(itemDrops[zoneId]) }
+    -- unpack() only expands fully as the last element of a table constructor
+    local drops = { unpack(commonDrops) }
+    for _, itemId in ipairs(itemDrops[zoneId]) do
+        table.insert(drops, itemId)
+    end
+
     local rand = math.random(1, #drops - itemTierDeductions[zoneId][tier])
 
     return drops[rand]
